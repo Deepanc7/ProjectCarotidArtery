@@ -58,17 +58,20 @@ def accuracy_score(prediction, groundtruth):
     accuracy = np.divide(TP + TN, N)
     return accuracy * 100.0
 
-def prepare_plot(filename,origImage, out):
+def prepare_plot(filename, origImage, out, predmask):
 	# initialize our figure
-	figure, ax = plt.subplots(nrows=1, ncols=2, figsize=(10, 10))
+	figure, ax = plt.subplots(nrows=1, ncols=3, figsize=(10, 10))
 	# plot the original image, its mask, and the predicted mask
 	ax[0].imshow(origImage)
-	#ax[1].imshow(origMask)
+	# ax[1].imshow(origMask)
 	ax[1].imshow(out)
+	ax[2].imshow(predmask)
+
 	# set the titles of the subplots
-	#ax[0].set_title("Image")
+	# ax[0].set_title("Image")
 	ax[0].set_title("Original Mask")
 	ax[1].set_title("Predicted Mask")
+	ax[2].set_title("Predicted Mask")
 	# set the layout of the figure and display it
 	figure.tight_layout()
 	#figure.show()
@@ -114,9 +117,16 @@ def make_predictions(model, imagePath):
 		predMask = (predMask > config.THRESHOLD) * 255
 		predMask = predMask.astype(np.uint8)
 		# prepare a plot for visualization
+		predmask = predMask.copy()
+		im = orig.copy()
+		predmask = cv2.resize(predmask, (128, 128))
+		ret, thresh = cv2.threshold(predmask, 127, 255, 0)
+		contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+		cv2.drawContours(im, contours, -1, (255, 255, 255), 1)
 
-		prepare_plot(filename,orig,predMask)
-		return orig,predMask,filename
+		# prepare a plot for visualization
+		prepare_plot(filename, orig, im, predMask)
+		return orig, predMask, filename
 
 # load the image paths in our testing file and randomly select 10
 # image paths
@@ -135,7 +145,7 @@ from glob import glob
 for path in glob("C:/Users/Deepa N C/PycharmProjects/SegRefCarotidArtery/test/*.png"):
 	make_predictions(unet,path)
 """
-"""
+
 #for training data
 image = config.IMAGE_DATASET
 mask =config.MASK_DATASET
@@ -211,5 +221,5 @@ for image,mask in zip(glob(image),glob(mask)):
 	df = pd.DataFrame(SCORE, columns=["Image", "Dice Coefficient", "Accuracy"])
 	df.to_csv("score/scoreval.csv")
 print("Validation Dice Average = ",diceavg/count)
-
+"""
 
