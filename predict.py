@@ -196,7 +196,7 @@ for image,mask in zip(glob(image),glob(mask)):
 	df = pd.DataFrame(SCORE, columns=["Image", "Dice Coefficient", "Accuracy"])
 	df.to_csv("score/scoretest.csv")
 print("Test Dice Average = ",diceavg/count)
-"""
+
 #for validation
 SCORE=[]
 count=0
@@ -221,5 +221,5 @@ for image,mask in zip(glob(image),glob(mask)):
 	df = pd.DataFrame(SCORE, columns=["Image", "Dice Coefficient", "Accuracy"])
 	df.to_csv("score/scoreval.csv")
 print("Validation Dice Average = ",diceavg/count)
-"""
+
 
