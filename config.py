@@ -21,7 +21,7 @@ NUM_LEVELS = 3
 # initialize learning rate, number of epochs to train for, and the
 # batch size
 INIT_LR = 0.001
-NUM_EPOCHS = 250
+NUM_EPOCHS = 300
 BATCH_SIZE = 64
 # define the input image dimensions
 INPUT_IMAGE_WIDTH = 128
@@ -35,4 +35,4 @@ BASE_OUTPUT = "output"
 MODEL_PATH = os.path.join(BASE_OUTPUT, "unet_tgs_salt.pth")
 PLOT_PATH = os.path.sep.join([BASE_OUTPUT, "plot.png"])
 TEST_PATHS = os.path.sep.join([BASE_OUTPUT, "test_paths.txt"])
-DICE_COEFF = os.path.sep.join([BASE_OUTPUT, "dice_coefficients.txt"])
+MASK_PATHS = os.path.sep.join([BASE_OUTPUT, "mask_paths.txt"])

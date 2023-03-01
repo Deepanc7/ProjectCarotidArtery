@@ -34,6 +34,9 @@ if __name__ == '__main__':
 	f = open(config.TEST_PATHS, "w")
 	f.write("\n".join(testImages))
 	f.close()
+	f = open('output/mask_paths.txt', "w")
+	f.write("\n".join(testMasks))
+	f.close()
 
 	# define transformations
 	transforms = transforms.Compose([transforms.ToPILImage(),

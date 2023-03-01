@@ -76,7 +76,7 @@ def prepare_plot(filename, origImage, out, predmask):
 	figure.tight_layout()
 	#figure.show()
 	filename=filename[:-4]
-	figure.savefig(f"results-180/{filename}.png")
+	figure.savefig(f"results-250/{filename}.png")
 
 def make_predictions(model, imagePath):
 	# set model to evaluation mode
@@ -132,7 +132,7 @@ def make_predictions(model, imagePath):
 # image paths
 print("[INFO] loading up test image paths...")
 imagePaths = open(config.TEST_PATHS).read().strip().split("\n")
-imagePaths = np.random.choice(imagePaths, size=10)
+maskPaths = open(config.MASK_PATHS).read().strip().split("\n")
 # load our model from disk and flash it to the current device
 print("[INFO] load up model...")
 unet = torch.load(config.MODEL_PATH).to(config.DEVICE)
@@ -145,7 +145,7 @@ from glob import glob
 for path in glob("C:/Users/Deepa N C/PycharmProjects/SegRefCarotidArtery/test/*.png"):
 	make_predictions(unet,path)
 """
-
+"""
 #for training data
 image = config.IMAGE_DATASET
 mask =config.MASK_DATASET
@@ -171,14 +171,14 @@ for image,mask in zip(glob(image),glob(mask)):
 	df = pd.DataFrame(SCORE, columns=["Image", "Dice Coefficient", "Accuracy"])
 	df.to_csv("score/scoretrain.csv")
 print("Train Dice Average = ",diceavg/count)
-
+"""
 #for testing
 SCORE=[]
 count=0
 diceavg=0
 image="test/image/*.png"
 mask="test/mask/*.jpg"
-for image,mask in zip(glob(image),glob(mask)):
+for image,mask in zip(imagePaths,maskPaths):
 	# make predictions and visualize the results
 	count+=1
 	mask=cv2.imread(mask)
