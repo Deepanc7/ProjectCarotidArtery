@@ -62,22 +62,21 @@ def prepare_plot(filename, origImage, out, predmask):
 	# initialize our figure
 	figure, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 10))
 	# plot the original image, its mask, and the predicted mask
-	#ax[0].imshow(origImage)
+	ax[0].imshow(origImage)
 	# ax[1].imshow(origMask)
-	ax.imshow(out)
-	#ax[2].imshow(predmask)
+	ax[1].imshow(out)
+	ax[2].imshow(predmask)
 
 	# set the titles of the subplots
 	# ax[0].set_title("Image")
-	#ax[0].set_title("Original Mask")
-	#ax.set_title("Predicted Mask")
-	ax.set_axis_off()
-	#ax[2].set_title("Predicted Mask")
+	ax[0].set_title("Original Mask")
+	ax[1].set_title("Predicted Mask")
+	ax[2].set_title("Predicted Mask")
 	# set the layout of the figure and display it
 	figure.tight_layout()
 	#figure.show()
 	filename=filename[:-4]
-	figure.savefig(f"out/{filename}.png")
+	figure.savefig(f"results-2000-10e/{filename}.png")
 
 def make_predictions(model, imagePath):
 	# set model to evaluation mode
@@ -147,13 +146,11 @@ from glob import glob
 for path in glob("C:/Users/Deepa N C/PycharmProjects/SegRefCarotidArtery/test/*.png"):
 	make_predictions(unet,path)
 """
-"""
 #for training data
 image = config.IMAGE_DATASET
 mask =config.MASK_DATASET
 SCORE=[]
 count=0
-diceavg=0
 
 for image,mask in zip(glob(image),glob(mask)):
 	# make predictions and visualize the results
@@ -166,18 +163,18 @@ for image,mask in zip(glob(image),glob(mask)):
 
 	dice_coefficient=dice_coeff(predmask,mask)
 	acc=accuracy_score(predmask,mask)
-	diceavg+=dice_coefficient
+	#diceavg+=dice_coefficient
 
 	SCORE.append([filename, dice_coefficient, acc])
 
 	df = pd.DataFrame(SCORE, columns=["Image", "Dice Coefficient", "Accuracy"])
 	df.to_csv("score/scoretrain.csv")
-print("Train Dice Average = ",diceavg/count)
-"""
+#print("Train Dice Average = ",diceavg/count)
+
 #for testing
 SCORE=[]
 count=0
-diceavg=0
+#diceavg=0
 image="test/image/*.png"
 mask="test/mask/*.jpg"
 for image,mask in zip(imagePaths,maskPaths):
@@ -191,13 +188,13 @@ for image,mask in zip(imagePaths,maskPaths):
 
 	dice_coefficient=dice_coeff(predmask,mask)
 	acc=accuracy_score(predmask,mask)
-	diceavg+=dice_coefficient
+	#diceavg+=dice_coefficient
 
 	SCORE.append([filename, dice_coefficient, acc])
 
 	df = pd.DataFrame(SCORE, columns=["Image", "Dice Coefficient", "Accuracy"])
 	df.to_csv("score/scoretest.csv")
-print("Test Dice Average = ",diceavg/count)
+#print("Test Dice Average = ",diceavg/count)
 
 #for validation
 SCORE=[]
