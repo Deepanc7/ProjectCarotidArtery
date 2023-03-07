@@ -60,23 +60,24 @@ def accuracy_score(prediction, groundtruth):
 
 def prepare_plot(filename, origImage, out, predmask):
 	# initialize our figure
-	figure, ax = plt.subplots(nrows=1, ncols=3, figsize=(10, 10))
+	figure, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 10))
 	# plot the original image, its mask, and the predicted mask
-	ax[0].imshow(origImage)
+	#ax[0].imshow(origImage)
 	# ax[1].imshow(origMask)
-	ax[1].imshow(out)
-	ax[2].imshow(predmask)
+	ax.imshow(out)
+	#ax[2].imshow(predmask)
 
 	# set the titles of the subplots
 	# ax[0].set_title("Image")
-	ax[0].set_title("Original Mask")
-	ax[1].set_title("Predicted Mask")
-	ax[2].set_title("Predicted Mask")
+	#ax[0].set_title("Original Mask")
+	#ax.set_title("Predicted Mask")
+	ax.set_axis_off()
+	#ax[2].set_title("Predicted Mask")
 	# set the layout of the figure and display it
 	figure.tight_layout()
 	#figure.show()
 	filename=filename[:-4]
-	figure.savefig(f"results-250/{filename}.png")
+	figure.savefig(f"out/{filename}.png")
 
 def make_predictions(model, imagePath):
 	# set model to evaluation mode
@@ -118,11 +119,12 @@ def make_predictions(model, imagePath):
 		predMask = predMask.astype(np.uint8)
 		# prepare a plot for visualization
 		predmask = predMask.copy()
+		orig = cv2.imread(imagePath)
 		im = orig.copy()
-		predmask = cv2.resize(predmask, (128, 128))
+		predmask = cv2.resize(predmask, (388,400))
 		ret, thresh = cv2.threshold(predmask, 127, 255, 0)
 		contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-		cv2.drawContours(im, contours, -1, (255, 255, 255), 1)
+		cv2.drawContours(im, contours[0], -1, (255, 255, 255), 1)
 
 		# prepare a plot for visualization
 		prepare_plot(filename, orig, im, predMask)
