@@ -15,15 +15,32 @@ import matplotlib.pyplot as plt
 import torch
 import time
 import os
+import cv2
 
 if __name__ == '__main__':
 	# load the image and mask filepaths in a sorted manner
 	imagePaths = sorted(list(paths.list_images(config.IMAGE_DATASET_PATH)))
 	maskPaths = sorted(list(paths.list_images(config.MASK_DATASET_PATH)))
+
 	# partition the data into training and testing splits using 85% of
 	# the data for training and the remaining 15% for testing
 
 	split = train_test_split(imagePaths, maskPaths,
+							 test_size=config.VAL_SPLIT, random_state=42)
+	# unpack the data split
+	(trainImages1, valImages) = split[:2]
+	(trainMasks1, valMasks) = split[2:]
+	# write the testing image paths to disk so that we can use then
+	# when evaluating/testing our model
+	print("[INFO] saving validation image paths...")
+	f = open(config.VAL_IMAGES, "w")
+	f.write("\n".join(valImages))
+	f.close()
+	f = open(config.VAL_MASKS, "w")
+	f.write("\n".join(valMasks))
+	f.close()
+
+	split = train_test_split(trainImages1, trainMasks1,
 							 test_size=config.TEST_SPLIT, random_state=42)
 	# unpack the data split
 	(trainImages, testImages) = split[:2]
@@ -38,16 +55,25 @@ if __name__ == '__main__':
 	f.write("\n".join(testMasks))
 	f.close()
 
+	f = open(config.TEST_PATHS, "w")
+	f.write("\n".join(testImages))
+	f.close()
+	f = open('output/mask_paths.txt', "w")
+	f.write("\n".join(testMasks))
+	f.close()
+
 	# define transformations
-	transforms = transforms.Compose([transforms.ToPILImage(),
+	transforms=transforms.Compose([transforms.ToPILImage(),
 									 transforms.Resize((config.INPUT_IMAGE_HEIGHT,
 														config.INPUT_IMAGE_WIDTH)),
 									 transforms.ToTensor()])
+
 	# create the train and test datasets
 	trainDS = SegmentationDataset(imagePaths=trainImages, maskPaths=trainMasks,
 								  transforms=transforms)
 	testDS = SegmentationDataset(imagePaths=testImages, maskPaths=testMasks,
 								 transforms=transforms)
+
 	print(f"[INFO] found {len(trainDS)} examples in the training set...")
 	print(f"[INFO] found {len(testDS)} examples in the test set...")
 	# create the training and test data loaders

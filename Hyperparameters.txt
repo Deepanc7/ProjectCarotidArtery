@@ -1,3 +1,48 @@
+50 epochs
+Test Dice Average =  0.4034462425878032
+Validation Dice Average =  0.6502256576510278
+
+dropout layer 50 epochs
+Test Dice Average =  0.4603564372204823
+Validation Dice Average =  0.6528355666899552
+
+dropout layer 50 epochs (new data)
+Test Dice Average =  0.5735933115144503
+Validation Dice Average =  0.37899567703695597
+
+50 epochs (new data)
+Test Dice Average =  0.4822852124569369
+Validation Dice Average =  0.3096953882456739
+
+50 epochs dropout in both encoder and decoder (new data)
+Test Dice Average =  0.590406319145871
+Validation Dice Average =  0.4131613241924393
+
+50 epochs dropout in both encoder and decoder
+Test Dice Average =  0.43179170414921775
+Validation Dice Average =  0.6743610051630943
+
+300 epochs dropout in both encoder and decoder
+Test Dice Average =  0.7883445128304969
+Validation Dice Average =  0.8129102428975535
+
+300 epochs dropout in both encoder and decoder(new data)
+Test Dice Average =  0.7293201845973519
+Validation Dice Average =  0.44855078546532695
+
+50 epochs new model (new data)
+Train Dice Average =  0.3303305318972832
+Test Dice Average =  0.24174638829750783
+Validation Dice Average =  0.22641517892802415
+
+300 epochs new model (new data)
+Train Dice Average =  0.7904197090405568
+Test Dice Average =  0.5150532617986723
+Validation Dice Average =  0.502677951020942
+
+
+
+
 300 epochs 199 train 36 test 48 val
 0.7034656257590576 val
 0.7982056112531659 test
@@ -7,3 +52,57 @@
 0.4510156367347666 val
 0.7100134600521337 test
 0.8599464845491882 train
+
+New dataset
+
+25 epochs, batch size 64
+Test Dice Average =  0.5106959634450303
+Validation Dice Average =  0.402105232489414
+
+150 epochs, batch size 64
+Test Dice Average =  0.7217081060861882
+Validation Dice Average =  0.5087911668365045
+
+150 epochs, batch size 32
+Test Dice Average =  0.7262382975487265
+Validation Dice Average =  0.39999751713946785
+
+200 epochs, batch size 64
+Test Dice Average =  0.6807650334613059
+Validation Dice Average =  0.45266500134005755
+
+
+300 epochs new model (new data) 32bs
+Train Dice Average =  0.7904197090405568
+Test Dice Average =  0.5150532617986723
+Validation Dice Average =  0.502677951020942
+
+50 epochs new model (new data) 32bs [resultsbs32ep50]
+Train Dice Average =  0.5264758344377471
+Test Dice Average =  0.3907327441578678
+Validation Dice Average =  0.36718890604486737
+
+300 epochs new model (new data) 32bs normalized [resultsbs32ep300]
+Train Dice Average =  0.8084217967693131
+Test Dice Average =  0.6013274686396164
+Validation Dice Average =  0.5435662242813402
+
+52 epochs new model (new data) 32bs normalized
+Train Dice Average =  0.665963893731502
+Test Dice Average =  0.4793421842762923
+Validation Dice Average =  0.44687404073426
+
+180 epochs new model (new data) 32bs normalized [resultsbs32ep180N]
+Train Dice Average =  0.7959498190097942
+Test Dice Average =  0.5803561754927292
+Validation Dice Average =  0.5374196542328765
+
+52 epochs new model (new data) 32bs normalized without dropout in decoder [resultsbs32ep52NWD]
+Train Dice Average =  0.5046404871226119
+Test Dice Average =  0.34554026178015185
+Validation Dice Average =  0.362092816265431
+
+300 epochs new model (new data) 32bs normalized without dropout in decoder [resultsbs32ep300NWD]
+Train Dice Average =  0.7807226265534914
+Test Dice Average =  0.5531978797859848
+Validation Dice Average =  0.5306901371123763

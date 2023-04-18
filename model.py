@@ -21,13 +21,14 @@ class Block(Module):
 		return self.conv2(self.relu(self.conv1(x)))
 
 class Encoder(Module):
-	def __init__(self, channels=(3, 16, 32, 64)):
+	def __init__(self, channels=(3, 16, 32, 64, 128)):
 		super().__init__()
 		# store the encoder blocks and maxpooling layer
 		self.encBlocks = ModuleList(
 			[Block(channels[i], channels[i + 1])
 			 	for i in range(len(channels) - 1)])
 		self.pool = MaxPool2d(2)
+		self.drop = torch.nn.Dropout2d(p=0.2)
 	def forward(self, x):
 		# initialize an empty list to store the intermediate outputs
 		blockOutputs = []
@@ -42,7 +43,7 @@ class Encoder(Module):
 		return blockOutputs
 
 class Decoder(Module):
-	def __init__(self, channels=(64, 32, 16)):
+	def __init__(self, channels=(128, 64, 32, 16)):
 		super().__init__()
 		# initialize the number of channels, upsampler blocks, and
 		# decoder blocks
@@ -53,6 +54,7 @@ class Decoder(Module):
 		self.dec_blocks = ModuleList(
 			[Block(channels[i], channels[i + 1])
 			 	for i in range(len(channels) - 1)])
+		self.drop = torch.nn.Dropout2d(p=0.2)
 	def forward(self, x, encFeatures):
 		# loop through the number of channels
 		for i in range(len(self.channels) - 1):
@@ -65,6 +67,7 @@ class Decoder(Module):
 			encFeat = self.crop(encFeatures[i], x)
 			x = torch.cat([x, encFeat], dim=1)
 			x = self.dec_blocks[i](x)
+			x = self.drop(x)
 		# return the final decoder output
 		return x
 	def crop(self, encFeatures, x):
@@ -76,8 +79,8 @@ class Decoder(Module):
 		return encFeatures
 
 class UNet(Module):
-	def __init__(self, encChannels=(3, 16, 32, 64),
-		 decChannels=(64, 32, 16),
+	def __init__(self, encChannels=(3, 16, 32, 64, 128),
+		 decChannels=(128, 64, 32, 16),
 		 nbClasses=1, retainDim=True,
 		 outSize=(config.INPUT_IMAGE_HEIGHT,  config.INPUT_IMAGE_WIDTH)):
 		super().__init__()

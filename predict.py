@@ -60,23 +60,24 @@ def accuracy_score(prediction, groundtruth):
 
 def prepare_plot(filename, origImage, out, predmask):
 	# initialize our figure
-	figure, ax = plt.subplots(nrows=1, ncols=3, figsize=(10, 10))
+	#figure, ax = plt.subplots(nrows=1, ncols=3, figsize=(10, 10))
 	# plot the original image, its mask, and the predicted mask
-	ax[0].imshow(origImage)
+	#ax[0].imshow(origImage)
 	# ax[1].imshow(origMask)
-	ax[1].imshow(out)
-	ax[2].imshow(predmask)
+	#ax[1].imshow(out)
+	#ax[2].imshow(predmask)
 
 	# set the titles of the subplots
 	# ax[0].set_title("Image")
-	ax[0].set_title("Original Mask")
-	ax[1].set_title("Predicted Mask")
-	ax[2].set_title("Predicted Mask")
+	#ax[0].set_title("Original Mask")
+	#ax[1].set_title("Predicted Mask")
+	#ax[2].set_title("Predicted Mask")
 	# set the layout of the figure and display it
-	figure.tight_layout()
+	#figure.tight_layout()
 	#figure.show()
 	filename=filename[:-4]
-	figure.savefig(f"results-2000-25e/{filename}.png")
+	#figure.savefig(f"resultsbs32ep50/{filename}.png")
+	cv2.imwrite(f"resultsbs32ep52NWE/{filename}.png",out)
 
 def make_predictions(model, imagePath):
 	# set model to evaluation mode
@@ -127,6 +128,7 @@ def make_predictions(model, imagePath):
 
 		# prepare a plot for visualization
 		prepare_plot(filename, orig, im, predMask)
+
 		return orig, predMask, filename
 
 # load the image paths in our testing file and randomly select 10
@@ -134,6 +136,10 @@ def make_predictions(model, imagePath):
 print("[INFO] loading up test image paths...")
 imagePaths = open(config.TEST_PATHS).read().strip().split("\n")
 maskPaths = open(config.MASK_PATHS).read().strip().split("\n")
+valImages = open(config.VAL_IMAGES).read().strip().split("\n")
+valMasks = open(config.VAL_MASKS).read().strip().split("\n")
+trainImages = open(config.TRAIN_IMAGES).read().strip().split("\n")
+trainMasks = open(config.TRAIN_MASKS).read().strip().split("\n")
 # load our model from disk and flash it to the current device
 print("[INFO] load up model...")
 unet = torch.load(config.MODEL_PATH).to(config.DEVICE)
@@ -146,13 +152,13 @@ from glob import glob
 for path in glob("C:/Users/Deepa N C/PycharmProjects/SegRefCarotidArtery/test/*.png"):
 	make_predictions(unet,path)
 """
-"""
+
 #for training data
 image = config.IMAGE_DATASET
 mask =config.MASK_DATASET
+diceavg=0
 SCORE=[]
 count=0
-
 for image,mask in zip(glob(image),glob(mask)):
 	# make predictions and visualize the results
 	count+=1
@@ -164,20 +170,18 @@ for image,mask in zip(glob(image),glob(mask)):
 
 	dice_coefficient=dice_coeff(predmask,mask)
 	acc=accuracy_score(predmask,mask)
-	#diceavg+=dice_coefficient
+	diceavg+=dice_coefficient
 
 	SCORE.append([filename, dice_coefficient, acc])
 
 	df = pd.DataFrame(SCORE, columns=["Image", "Dice Coefficient", "Accuracy"])
 	df.to_csv("score/scoretrain.csv")
-#print("Train Dice Average = ",diceavg/count)
-"""
+print("Train Dice Average = ",diceavg/count)
+
 #for testing
 SCORE=[]
 count=0
 diceavg=0
-image="test/image/*.png"
-mask="test/mask/*.jpg"
 for image,mask in zip(imagePaths,maskPaths):
 	# make predictions and visualize the results
 	count+=1
@@ -201,9 +205,7 @@ print("Test Dice Average = ",diceavg/count)
 SCORE=[]
 count=0
 diceavg=0
-image="val/image/*.png"
-mask="val/mask/*.jpg"
-for image,mask in zip(glob(image),glob(mask)):
+for image,mask in zip(valImages,valMasks):
 	# make predictions and visualize the results
 	count+=1
 	mask=cv2.imread(mask)
