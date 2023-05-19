@@ -60,24 +60,25 @@ def accuracy_score(prediction, groundtruth):
 
 def prepare_plot(filename, origImage, out, predmask):
 	# initialize our figure
-	#figure, ax = plt.subplots(nrows=1, ncols=3, figsize=(10, 10))
+	figure, ax = plt.subplots(nrows=1, ncols=3, figsize=(10, 10))
 	# plot the original image, its mask, and the predicted mask
-	#ax[0].imshow(origImage)
+	ax[0].imshow(origImage)
 	# ax[1].imshow(origMask)
-	#ax[1].imshow(out)
-	#ax[2].imshow(predmask)
+	ax[1].imshow(out)
+	ax[2].imshow(predmask)
 
 	# set the titles of the subplots
 	# ax[0].set_title("Image")
-	#ax[0].set_title("Original Mask")
-	#ax[1].set_title("Predicted Mask")
-	#ax[2].set_title("Predicted Mask")
+	ax[0].set_title("Original Mask")
+	ax[1].set_title("Boundary of output")
+	ax[2].set_title("Predicted Mask")
 	# set the layout of the figure and display it
-	#figure.tight_layout()
-	#figure.show()
+	figure.tight_layout()
+	figure.show()
+	figure.waitforbuttonpress(0)
 	filename=filename[:-4]
-	#figure.savefig(f"resultsbs32ep50/{filename}.png")
-	cv2.imwrite(f"resultsbs32ep52NWE/{filename}.png",out)
+	#figure.savefig(f"results/{filename}.png")
+	#cv2.imwrite(f"results300/{filename}.png",out)
 
 def make_predictions(model, imagePath):
 	# set model to evaluation mode
@@ -90,7 +91,7 @@ def make_predictions(model, imagePath):
 		#image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 		image = image.astype("float32") / 255.0
 		# resize the image and make a copy of it for visualization
-		image = cv2.resize(image, (128, 128))
+		image = cv2.resize(image, (256, 256))
 		orig = image.copy()
 		# find the filename and generate the path to ground truth
 		# mask
@@ -152,21 +153,21 @@ from glob import glob
 for path in glob("C:/Users/Deepa N C/PycharmProjects/SegRefCarotidArtery/test/*.png"):
 	make_predictions(unet,path)
 """
-
+"""
 #for training data
 image = config.IMAGE_DATASET
 mask =config.MASK_DATASET
 diceavg=0
 SCORE=[]
 count=0
-for image,mask in zip(glob(image),glob(mask)):
+for image,mask in zip(trainImages,trainMasks):
 	# make predictions and visualize the results
 	count+=1
 	mask=cv2.imread(mask)
 	image,predmask,filename=make_predictions(unet, image)
 	mask=color.rgb2gray(mask)
-	mask = cv2.resize(mask, (128, 128))
-	predmask=cv2.resize(predmask,(128,128))
+	mask = cv2.resize(mask, (256, 256))
+	predmask=cv2.resize(predmask,(256,256))
 
 	dice_coefficient=dice_coeff(predmask,mask)
 	acc=accuracy_score(predmask,mask)
@@ -188,8 +189,8 @@ for image,mask in zip(imagePaths,maskPaths):
 	mask=cv2.imread(mask)
 	image,predmask,filename=make_predictions(unet, image)
 	mask=color.rgb2gray(mask)
-	mask = cv2.resize(mask, (128, 128))
-	predmask=cv2.resize(predmask,(128,128))
+	mask = cv2.resize(mask, (256, 256))
+	predmask=cv2.resize(predmask,(256,256))
 
 	dice_coefficient=dice_coeff(predmask,mask)
 	acc=accuracy_score(predmask,mask)
@@ -211,8 +212,8 @@ for image,mask in zip(valImages,valMasks):
 	mask=cv2.imread(mask)
 	image,predmask,filename=make_predictions(unet, image)
 	mask=color.rgb2gray(mask)
-	mask = cv2.resize(mask, (128, 128))
-	predmask=cv2.resize(predmask,(128,128))
+	mask = cv2.resize(mask, (256, 256))
+	predmask=cv2.resize(predmask,(256,256))
 
 	dice_coefficient=dice_coeff(predmask,mask)
 	acc=accuracy_score(predmask,mask)
@@ -223,5 +224,16 @@ for image,mask in zip(valImages,valMasks):
 	df = pd.DataFrame(SCORE, columns=["Image", "Dice Coefficient", "Accuracy"])
 	df.to_csv("score/scoreval.csv")
 print("Validation Dice Average = ",diceavg/count)
+"""
 
+image="Images/image2/202201121858500045VAS_slice_858.png"
+mask=cv2.imread("Masks/mask2/202201121858500045VAS_slice_858.png")
+image,predmask,filename=make_predictions(unet, image)
+mask=color.rgb2gray(mask)
+mask = cv2.resize(mask, (256, 256))
+predmask=cv2.resize(predmask,(256,256))
 
+dice_coefficient=dice_coeff(predmask,mask)
+acc=accuracy_score(predmask,mask)
+print("Dice coefficient = ",dice_coefficient)
+print("Accuracy = ",acc)

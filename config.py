@@ -6,7 +6,7 @@ IMAGE_BEFORE_PREPROCESS = "Images/image1"
 IMAGE_DATASET_PATH = "Images/image2"
 MASK_DATASET_PATH = "Masks/mask2"
 IMAGE_DATASET = "Images/image2/*.png"
-MASK_DATASET = "Masks/mask2/*.png"
+MASK_DATASET = "Masks/mask2/*.jpg"
 # define the test split
 TEST_SPLIT = 0.1764
 VAL_SPLIT = 0.15
@@ -23,11 +23,11 @@ NUM_LEVELS = 4
 # initialize learning rate, number of epochs to train for, and the
 # batch size
 INIT_LR = 0.001
-NUM_EPOCHS = 52
+NUM_EPOCHS = 300
 BATCH_SIZE = 32
 # define the input image dimensions
-INPUT_IMAGE_WIDTH = 128
-INPUT_IMAGE_HEIGHT = 128
+INPUT_IMAGE_WIDTH = 256
+INPUT_IMAGE_HEIGHT = 256
 # define threshold to filter weak predictions
 THRESHOLD = 0.5
 # define the path to the base output directory

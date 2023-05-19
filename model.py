@@ -38,6 +38,7 @@ class Encoder(Module):
 			# the outputs, and then apply maxpooling on the output
 			x = block(x)
 			blockOutputs.append(x)
+			x = self.drop(x)
 			x = self.pool(x)
 		# return the list containing the intermediate outputs
 		return blockOutputs
