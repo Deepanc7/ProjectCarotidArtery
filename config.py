@@ -6,7 +6,7 @@ IMAGE_BEFORE_PREPROCESS = "Images/image1"
 IMAGE_DATASET_PATH = "Images/image2"
 MASK_DATASET_PATH = "Masks/mask2"
 IMAGE_DATASET = "Images/image2/*.png"
-MASK_DATASET = "Masks/mask2/*.jpg"
+MASK_DATASET = "Masks/mask2/*.png"
 # define the test split
 TEST_SPLIT = 0.1764
 VAL_SPLIT = 0.15

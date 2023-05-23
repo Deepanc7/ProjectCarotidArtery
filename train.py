@@ -21,32 +21,12 @@ if __name__ == '__main__':
 	# load the image and mask filepaths in a sorted manner
 	imagePaths = sorted(list(paths.list_images(config.IMAGE_DATASET_PATH)))
 	maskPaths = sorted(list(paths.list_images(config.MASK_DATASET_PATH)))
-	trainimages = open("output/train_images.txt").read().strip().split("\n")
-	trainmasks = open("output/train_masks.txt").read().strip().split("\n")
-	testimages = open("output/test_paths.txt").read().strip().split("\n")
-	testmasks = open("output/mask_paths.txt").read().strip().split("\n")
-	train_images = []
-	train_masks = []
-	test_images = []
-	test_masks = []
-	for data in trainimages:
-		train_images.append(data)
-	for data in trainmasks:
-		train_masks.append(data)
-	for data in testimages:
-		test_images.append(data)
-	for data in testmasks:
-		test_masks.append(data)
-
-	"""
-	# partition the data into training and testing splits using 85% of
-	# the data for training and the remaining 15% for testing
 
 	split = train_test_split(imagePaths, maskPaths,
 							 test_size=config.VAL_SPLIT, random_state=42)
 	# unpack the data split
-	(trainImages1, valImages) = split[:2]
-	(trainMasks1, valMasks) = split[2:]
+	(trainImages, valImages) = split[:2]
+	(trainMasks, valMasks) = split[2:]
 	# write the testing image paths to disk so that we can use then
 	# when evaluating/testing our model
 	print("[INFO] saving validation image paths...")
@@ -57,7 +37,7 @@ if __name__ == '__main__':
 	f.write("\n".join(valMasks))
 	f.close()
 
-	split = train_test_split(trainImages1, trainMasks1,
+	split = train_test_split(trainImages, trainMasks,
 							 test_size=config.TEST_SPLIT, random_state=42)
 	# unpack the data split
 	(trainImages, testImages) = split[:2]
@@ -78,7 +58,7 @@ if __name__ == '__main__':
 	f = open('output/mask_paths.txt', "w")
 	f.write("\n".join(testMasks))
 	f.close()
-	"""
+
 	# define transformations
 	transforms=transforms.Compose([transforms.ToPILImage(),
 									 transforms.Resize((config.INPUT_IMAGE_HEIGHT,
@@ -86,9 +66,9 @@ if __name__ == '__main__':
 									 transforms.ToTensor()])
 
 	# create the train and test datasets
-	trainDS = SegmentationDataset(imagePaths=train_images, maskPaths=train_masks,
+	trainDS = SegmentationDataset(imagePaths=trainImages, maskPaths=trainMasks,
 								  transforms=transforms)
-	testDS = SegmentationDataset(imagePaths=test_images, maskPaths=test_masks,
+	testDS = SegmentationDataset(imagePaths=testImages, maskPaths=testMasks,
 								 transforms=transforms)
 
 	print(f"[INFO] found {len(trainDS)} examples in the training set...")

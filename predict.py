@@ -60,25 +60,25 @@ def accuracy_score(prediction, groundtruth):
 
 def prepare_plot(filename, origImage, out, predmask):
 	# initialize our figure
-	figure, ax = plt.subplots(nrows=1, ncols=3, figsize=(10, 10))
+	#figure, ax = plt.subplots(nrows=1, ncols=3, figsize=(10, 10))
 	# plot the original image, its mask, and the predicted mask
-	ax[0].imshow(origImage)
+	#ax[0].imshow(origImage)
 	# ax[1].imshow(origMask)
-	ax[1].imshow(out)
-	ax[2].imshow(predmask)
+	#ax[1].imshow(out)
+	#ax[2].imshow(predmask)
 
 	# set the titles of the subplots
 	# ax[0].set_title("Image")
-	ax[0].set_title("Original Mask")
-	ax[1].set_title("Boundary of output")
-	ax[2].set_title("Predicted Mask")
+	#ax[0].set_title("Original Mask")
+	#ax[1].set_title("Boundary of output")
+	#ax[2].set_title("Predicted Mask")
 	# set the layout of the figure and display it
-	figure.tight_layout()
-	figure.show()
-	figure.waitforbuttonpress(0)
+	#figure.tight_layout()
+	#figure.show()
+	#figure.waitforbuttonpress(0)
 	filename=filename[:-4]
 	#figure.savefig(f"results/{filename}.png")
-	#cv2.imwrite(f"results300/{filename}.png",out)
+	cv2.imwrite(f"results300/{filename}.png",out)
 
 def make_predictions(model, imagePath):
 	# set model to evaluation mode
@@ -125,7 +125,7 @@ def make_predictions(model, imagePath):
 		predmask = cv2.resize(predmask, (709,749))
 		ret, thresh = cv2.threshold(predmask, 127, 255, 0)
 		contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-		cv2.drawContours(im, contours, -1, (255, 255, 255), 1)
+		cv2.drawContours(im, contours, -1, (255, 255, 255), 3)
 
 		# prepare a plot for visualization
 		prepare_plot(filename, orig, im, predMask)
@@ -153,7 +153,7 @@ from glob import glob
 for path in glob("C:/Users/Deepa N C/PycharmProjects/SegRefCarotidArtery/test/*.png"):
 	make_predictions(unet,path)
 """
-"""
+
 #for training data
 image = config.IMAGE_DATASET
 mask =config.MASK_DATASET
@@ -237,3 +237,4 @@ dice_coefficient=dice_coeff(predmask,mask)
 acc=accuracy_score(predmask,mask)
 print("Dice coefficient = ",dice_coefficient)
 print("Accuracy = ",acc)
+"""
