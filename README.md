@@ -36,8 +36,8 @@ This project is a machine learning-based system aimed at analyzing carotid arter
    git clone https://github.com/Deepanc7/ProjectCarotidArtery.git
 
 2. Navigate to the project directory:
-  ```bash
-  cd ProjectCarotidArtery
+   ```bash
+   cd ProjectCarotidArtery
 
 3. Install the required dependencies:
 
