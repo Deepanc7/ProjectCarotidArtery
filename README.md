@@ -34,17 +34,21 @@ This project is a machine learning-based system aimed at analyzing carotid arter
 1. Clone the repository:  
    ```bash
    git clone https://github.com/Deepanc7/ProjectCarotidArtery.git
+
 2. Navigate to the project directory:
   ```bash
-cd ProjectCarotidArtery  
+  cd ProjectCarotidArtery
+
 3. Install the required dependencies:
 
 4. Run the preprocessing script:
-```bash
-python preprocess.py  
+   ```bash
+   python preprocess.py
+
 5. Train the model:
-```bash
-python train.py  
+   ```bash
+   python train.py
+
 6. Run the prediction script for new images:
-```bash
-python predict.py  
+   ```bash
+   python predict.py  
