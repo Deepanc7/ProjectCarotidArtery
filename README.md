@@ -1,4 +1,4 @@
-# **Carotid Artery**
+# **MedSeg-U – Medical Image Segmentation using U-Net for Artery Detection**
 
 ## **Overview**  
 This project is a machine learning-based system aimed at analyzing carotid artery images to assist in diagnosing and evaluating medical conditions. It focuses on preprocessing, model training, and prediction, providing an end-to-end solution for carotid artery analysis.
